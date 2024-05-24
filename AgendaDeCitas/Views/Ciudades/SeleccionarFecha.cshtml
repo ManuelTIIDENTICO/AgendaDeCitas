@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Select Day";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <style>
+
+
+        .btn-custom {
+            background-color: #e0e0e0; /* Gris claro */
+            color: #333; /* Gris oscuro */
+            padding: 0.5rem 1.5rem;
+            margin: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background-color: #333; /* Gris oscuro */
+                color: #fff; /* Blanco */
+            }
+
+        .btn-group-custom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        #time-slots {
+            width: 800px;
+            display: none;
+            flex-wrap: wrap;
+        }
+
+        .time-slot {
+            background-color: #ddd;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1 1 calc(33.333% - 10px); /* Three slots per row with spacing */
+            text-align: center;
+        }
+
+            .time-slot:hover {
+                background-color: #bbb;
+            }
+
+            .time-slot.selected {
+                background-color: #333;
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+
+    <div id="calendar-container">
+        <div id='calendar'></div>
+    </div>
+    <div id="time-slots"></div>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var timeSlotsEl = document.getElementById('time-slots');
+            var selectedDate;
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                height: 'auto',
+                contentHeight: 200,
+                aspectRatio: 4,
+                headerToolbar: false,
+                dayHeaderFormat: { weekday: 'short', month: 'short', day: 'numeric' },
+                selectable: true,
+                dateClick: function (info) {
+                    selectedDate = info.dateStr;
+                    showTimeSlots();
+                }
+            });
+
+            calendar.render();
+
+            function showTimeSlots() {
+                timeSlotsEl.style.display = 'flex';
+                timeSlotsEl.innerHTML = ''; // Clear any existing slots
+                var times = [];
+                for (var hour = 10; hour < 24; hour++) {
+                    var time1 = (hour % 12 === 0 ? 12 : hour % 12) + ':00 ' + (hour < 12 ? 'AM' : 'PM');
+                    var time2 = (hour % 12 === 0 ? 12 : hour % 12) + ':30 ' + (hour < 12 ? 'AM' : 'PM');
+                    times.push(time1, time2);
+                }
+                times.push('12:00 AM'); // Adding midnight time slot
+
+                times.forEach(function (time) {
+                    var slot = document.createElement('div');
+                    slot.className = 'time-slot';
+                    slot.innerText = time;
+                    slot.addEventListener('click', function () {
+                        selectTimeSlot(slot, time);
+                    });
+                    timeSlotsEl.appendChild(slot);
+                });
+            }
+
+            function selectTimeSlot(slot, time) {
+                var selectedSlots = document.querySelectorAll('.time-slot.selected');
+                selectedSlots.forEach(function (selectedSlot) {
+                    selectedSlot.classList.remove('selected');
+                });
+                slot.classList.add('selected');
+                var selectedTime = time;
+                window.location.href = '../citas/crear?date=' + selectedDate + '&time=' + selectedTime;
+            }
+        });
+    </script>
+
+</body>
+</html>
+

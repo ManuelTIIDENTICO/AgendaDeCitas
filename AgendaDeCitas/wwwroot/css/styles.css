@@ -1,0 +1,85 @@
+﻿/* wwwroot/css/styles.css */
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #4a90e2;
+}
+
+p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+button {
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    button:hover {
+        background-color: #357abd;
+    }
+
+.salonDate__dates .input-group-addon {
+    background-color: #f39c12;
+    border-color: #e67e22;
+    color: white;
+}
+
+.salonDate__dates .form-control {
+    border-color: #e67e22;
+}
+.datepicker-dropdown {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+/* Personalización del Date Picker */
+#date-picker.mbsc-input {
+    border: 1px solid #e67e22;
+    border-radius: 4px;
+}
+
+.mbsc-fr-btn {
+    background-color: #f39c12;
+    border-color: #e67e22;
+    color: white;
+}
+

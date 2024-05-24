@@ -1,0 +1,53 @@
+﻿@model AgendaDeCitas.Models.Cita
+
+<h2>Crear Cita</h2>
+
+<form asp-action="Crear" method="post">
+    <div class="form-group">
+        <label asp-for="ClinicID" class="control-label"></label>
+        <input asp-for="ClinicID" class="form-control" />
+        <span asp-validation-for="ClinicID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DiaryDate" class="control-label"></label>
+        <input asp-for="DiaryDate" class="form-control" />
+        <span asp-validation-for="DiaryDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TimeStart" class="control-label"></label>
+        <input asp-for="TimeStart" class="form-control" />
+        <span asp-validation-for="TimeStart" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TimeEnd" class="control-label"></label>
+        <input asp-for="TimeEnd" class="form-control" />
+        <span asp-validation-for="TimeEnd" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CabineID" class="control-label"></label>
+        <input asp-for="CabineID" class="form-control" />
+        <span asp-validation-for="CabineID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProfessionalID" class="control-label"></label>
+        <input asp-for="ProfessionalID" class="form-control" />
+        <span asp-validation-for="ProfessionalID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Services" class="control-label"></label>
+        <input asp-for="Services" class="form-control" />
+        <span asp-validation-for="Services" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DiaryComments" class="control-label"></label>
+        <input asp-for="DiaryComments" class="form-control" />
+        <span asp-validation-for="DiaryComments" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientToken" class="control-label"></label>
+        <input asp-for="ClientToken" class="form-control" />
+        <span asp-validation-for="ClientToken" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+

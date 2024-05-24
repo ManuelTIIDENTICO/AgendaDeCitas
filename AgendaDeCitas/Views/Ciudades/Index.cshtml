@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Ciudades";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+       
+        .btn-custom {
+            background-color: #e0e0e0; /* Gris claro */
+            color: #333; /* Gris oscuro */
+             padding: 0.5rem 1.5rem;
+            margin: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background-color: #333; /* Gris oscuro */
+                color: #fff; /* Blanco */
+            }
+
+        .btn-group-custom {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">Agendamiento de Citas</h2>
+                        <p class="card-text">Seleccione una ciudad:</p>
+                        <form asp-controller="Ciudades" asp-action="SeleccionarFecha" method="get">
+                            <div class="btn-group-custom">
+                                <button type="submit" class="btn btn-custom" name="ciudad" value="Barcelona">Barcelona</button>
+                                <button type="submit" class="btn btn-custom" name="ciudad" value="Albacete">Albacete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
