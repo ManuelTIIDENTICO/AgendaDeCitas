@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Información de la Clínica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var clinicInfo = ViewBag.Response != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(ViewBag.Response) : null;
+    var clinicID = TempData["ClinicID"];
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    body {
+        background-color: #f7f3f7;
+        font-size: 16px;
+    }
+
+    .clinic-info-container {
+        padding: 20px;
+        border-radius: 5px;
+        color: #6d3969;
+        max-width: 100%;
+        margin: 20px auto;
+    }
+
+    .clinic-info-title {
+        color: #cc0177;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .btn-calendar {
+        background-color: #cc0177;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        font-size: 16px;
+        height: 60px;
+    }
+
+        .btn-calendar i {
+            margin-right: 5px;
+        }
+
+    .btn-enter {
+        background-color: #6d3969;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        font-size: 16px;
+        height: 60px;
+    }
+
+        .btn-enter i {
+            margin-right: 5px;
+        }
+
+    .clinic-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .clinic-details p {
+        margin: 5px 0;
+    }
+
+    .clinic-details span {
+        display: block;
+    }
+
+    a {
+        color: #ffffff;
+    }
+</style>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> @ViewBag.ErrorMessage
+    </div>
+}
+else if (clinicInfo != null)
+{
+    <div class="clinic-info-container">
+        <div class="clinic-info">
+            <div class="clinic-details">
+                <p><span style="color: #6d3969; font-size: 40px; font-weight: bold;">@clinicInfo.ClinicCommercialName</span></p>
+                <p><span style="color: gray; font-size: 20px;">@clinicInfo.ClinicAddress1</span></p>
+                <p><span style="color: gray; font-size: 20px;">@clinicInfo.ClinicCity</span></p>
+            </div>
+            <div class="clinic-actions">
+                <form action="/Services/Details" method="post">
+                    <input type="hidden" name="clinicID" value="@clinicID" />
+                    <button type="submit" class="btn-calendar">
+                        <i class="fas fa-calendar-alt"></i> Agendar Cita
+                    </button>
+                </form>
+                <a href="/clinic/enter" class="btn-enter">
+                    Entrar
+                </a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        No se encontró información de la clínica.
+    </div>
+}
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

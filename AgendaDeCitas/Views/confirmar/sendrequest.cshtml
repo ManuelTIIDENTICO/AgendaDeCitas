@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Send Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Enviar Solicitud</h2>
+
+<form asp-action="SendRequest" method="post">
+    <div>
+        <label for="appId">AppId:</label>
+        <input type="text" id="appId" name="appId" required />
+    </div>
+    <div>
+        <label for="clientToken">ClientToken:</label>
+        <input type="text" id="clientToken" name="clientToken" required />
+    </div>
+    <button type="submit">Enviar</button>
+</form>

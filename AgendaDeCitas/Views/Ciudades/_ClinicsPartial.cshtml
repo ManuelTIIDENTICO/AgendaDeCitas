@@ -1,0 +1,14 @@
+﻿@model List<AgendaDeCitas.Controllers.ClinicViewModel>
+
+@foreach (var clinic in Model)
+{
+    var formatted = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(clinic.ClinicName.ToLower());
+
+    <a href="@Url.Action("Index", "ClinicaInfo", new { clinicID = clinic.ClinicID })" class="clinic-link">
+        <div class="clinic-info">
+            <span class="clinic-name">@formatted</span>
+            <span class="clinic-address">@clinic.ClinicAppAddress1</span>
+        </div>
+        <input type="checkbox" class="service-checkbox" />
+    </a>
+}

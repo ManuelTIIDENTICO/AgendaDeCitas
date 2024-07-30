@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+<style>
+body {
+    background-color: #f7f3f7;
+    color: #6d3969;
+}
+
+h1 {
+    color: #cc0177;
+}
+
+.btn-primary {
+    background-color: #cc0177;
+    border-color: #cc0177;
+}
+
+.btn-primary:hover {
+    background-color: #6d3969;
+    border-color: #6d3969;
+}
+</style>
+<body>
+    <h1>Confirmar Cita</h1>
+
+    <form asp-action="CreateAppointment" method="post">
+        <button type="submit" class="btn btn-primary">Confirmar Citas</button>
+    </form>
+</body>
+

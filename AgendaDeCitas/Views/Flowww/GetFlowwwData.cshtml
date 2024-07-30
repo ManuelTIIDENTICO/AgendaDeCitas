@@ -1,0 +1,90 @@
+﻿@model AgendaDeCitas.Models.FlowwwResponse
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tu cita ha sido confirmada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+           
+            padding: 20px;
+    
+          
+            text-align: center;
+        }
+
+        .appointment {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        h1 {
+            font-family: 'Nunito Sans', sans-serif;
+            color: #e7307d;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 30px;
+        }
+
+        h4 {
+            font-family: 'Nunito Sans', sans-serif;
+            color: #000;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .btn-exit {
+            background-color: transparent;
+            color: #000;
+            padding: 10px 20px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .btn-exit:hover {
+                background-color: #fff;
+                color: #e7307d;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h4>Tu cita ha sido confirmada</h4>
+        <h1>¡Te esperamos pronto!</h1>
+
+        @foreach (var appointment in Model.AppNext)
+        {
+            <div class="appointment">
+                <p><span class="label">Fecha:</span> @appointment.Date</p>
+                <p><span class="label">Hora Inicio:</span> @appointment.TimeStart</p>
+                <p><span class="label">Hora Final:</span> @appointment.TimeEnd</p>
+                <p><span class="label">Servicios:</span> @appointment.AppProductDesc</p>
+                <p><span class="label">Clinica:</span> @appointment.ClinicName</p>
+                <p><span class="label">Profesional</span> @appointment.ProfessionalName</p>
+            </div>
+        }
+
+        <a href="/" class="btn-exit">Salir</a>
+    </div>
+</body>
+</html>

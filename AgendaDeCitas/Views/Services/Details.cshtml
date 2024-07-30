@@ -1,16 +1,21 @@
-﻿@model List<AgendaDeCitas.Controllers.ClinicsByCityViewModel>
-
+﻿@{
+    ViewBag.Title = "Servicios";
+    string clinicID = ViewBag.ClinicID as string;
+    string clinicName = ViewBag.ClinicName as string;
+    string direccion = ViewBag.direccion as string;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-    <link rel="stylesheet" href="~/css/styles.css">
+     
+
     <style>
         body {
             background-color: #fff;
@@ -94,6 +99,9 @@
             justify-content: space-between;
             align-items: center;
             font-size: x-large;
+            border: 1px solid #000;
+            border-radius: 15px;
+            color: #000000;
         }
 
         .btn-next {
@@ -208,107 +216,29 @@
     </style>
 </head>
 <body>
-    <h1>Elige tu centro</h1>
-    <div id="loading" style="display: none;">
-        <div class="spinner"></div>
-    </div>
+    <h1>@clinicName</h1>
+    <i class="fa-solid fa-location-dot" ></i>
+    <h4>@direccion</h4>
 
-    <form id="clinicForm" method="post" action="@Url.Action("Details", "Services")">
-        <input type="hidden" name="clinicId" id="clinicId">
+    <form action="/Clinics/Details" method="post">
+        <input type="hidden" name="clinicID" value="@clinicID" />
+        <input type="hidden" name="serviceFamilySourceID" value="1" />
+        <button type="submit" class="btn btn-link btn-link-custom">
+
+            <span style="margin-left: 10px;"><h4>Depilación laser Hombre</h4></span>
+            <i class="fa-solid fa-arrow-right" style="margin-left: auto;color:#E7307D"></i><br />
+        </button>
     </form>
 
-    @if (Model != null && Model.Count > 0)
-    {
-        var sortedModel = Model.OrderBy(cityGroup => cityGroup.ClinicCity).ToList();
-        var count = 0;
-        @foreach (var cityGroup in sortedModel)
-        {
-            var cityId = cityGroup.ClinicCity.Replace(" ", "_");
-            var formattedCity = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(cityGroup.ClinicCity.ToLower());
 
-            <div class="accordion city-section" id="clinicAccordion-@cityId" data-city="@cityGroup.ClinicCity.ToLower()" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card">
-                    <div class="card-header" id="heading-@cityId">
-                        <h2>
-                            <div class="btn btn-link btn-link-custom" data-toggle="collapse" data-target="#collapse-@cityId" aria-expanded="false" aria-controls="collapse-@cityId">
-                                <h4>@formattedCity</h4>
-                                <i class="fa fa-chevron-right" style="color:#E7307D"></i>
-                            </div>
-                        </h2>
-                    </div>
-
-                    <div id="collapse-@cityId" class="collapse" aria-labelledby="heading-@cityId" data-parent="#clinicAccordion-@cityId">
-                        <div class="card-body">
-                            @foreach (var clinic in cityGroup.Clinics)
-                            {
-                                var formatted = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(clinic.ClinicName.ToLower());
-                                <div class="clinic-link" onclick="submitClinic('@clinic.ClinicID')" data-count="@count">
-                                    <div class="clinic-info">
-                                        <h5><span class="clinic-name">@formatted</span></h5>
-                                        <span class="clinic-address">@clinic.ClinicAppAddress1</span>
-                                    </div>
-                                    <input type="checkbox" class="service-checkbox" data-clinic-id="@clinic.ClinicID" />
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        }
-
-    }
-    else
-    {
-        <p class="no-clinics">No se encontraron clínicas.</p>
-    }
-
-    <br />
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script>
-        $(document).ready(function () {
-            AOS.init();
-
-            $('.btn-link-custom').on('click', function () {
-                var icon = $(this).find('i');
-                var isExpanded = $(this).attr('aria-expanded') === 'true';
-
-                $('.accordion').css('border', '1px solid #000');
-                if (isExpanded) {
-                    icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
-                    $(this).closest('.accordion').css('border', '1px solid #cc0177');
-                } else {
-                    icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
-                    $(this).closest('.accordion').css('border', '1px solid #cc0177');
-                }
-            });
-
-            $('.collapse').on('show.bs.collapse', function () {
-                $(this).closest('.accordion').css('border', '2px solid #cc0177');
-            }).on('hide.bs.collapse', function () {
-                $(this).closest('.accordion').css('border', '1px solid #000');
-            });
-
-            $('#showMoreBtn').on('click', function (e) {
-                e.preventDefault();
-                document.getElementById('loading').style.display = 'flex';
-
-                $('.city-section.hidden').slice(0, 5).removeClass('hidden');
-                if ($('.city-section.hidden').length == 0) {
-                    $(this).hide();
-                }
-                document.getElementById('loading').style.display = 'none';
-            });
-        });
-
-        function submitClinic(clinicId) {
-            $('#clinicId').val(clinicId);
-            $('#clinicForm').submit();
-        }
-    </script>
+    <form action="/Clinics/Details" method="post">
+        <input type="hidden" name="clinicID" value="@clinicID" />
+        <input type="hidden" name="serviceFamilySourceID" value="3" />
+        <button type="submit" class="btn-link-custom">
+         
+            <span style="margin-left: 10px;"><h4>Depilación laser Mujer</h4></span>
+            <i class="fa-solid fa-arrow-right" style="margin-left: auto;color:#E7307D"></i>
+        </button>
+    </form>
 </body>
 </html>

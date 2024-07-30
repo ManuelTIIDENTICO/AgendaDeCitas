@@ -1,0 +1,212 @@
+﻿@model ClientViewModel
+
+@{
+    ViewData["Title"] = "Crear Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<h4>Resumen de tu cita</h4>
+<div class="card"></div>
+
+<h1>Reserva tu cita</h1>
+
+<style>
+    body {
+        background-color: #fef9fb;
+    }
+
+    form {
+        border-radius: 20px;
+    }
+
+    h1 {
+        font-family: 'Nunito Sans', sans-serif;
+        color: #E7307D;
+        text-align: left;
+        margin-bottom: 20px;
+        font-size: 25px;
+    }
+
+    h4 {
+        font-family: 'Nunito Sans', sans-serif;
+        color: #000;
+        font-size: 25px;
+    }
+
+    h5 {
+        font-family: 'Nunito Sans', sans-serif;
+        color: #000;
+        font-size: 15px;
+    }
+
+    .card {
+        border-color: #fff;
+        border-radius: 10px;
+    }
+
+    .card-header {
+        background-color: #ffffff;
+        color: #000;
+        border-radius: 15px;
+        border-color: #000;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+
+        .card-header h2 {
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header .btn-link-custom {
+            width: 100%;
+        }
+
+    .accordion {
+        border: 1px solid #000;
+        border-radius: 10px;
+    }
+
+    .input-container {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+        .input-container input {
+            border: 1px solid #6d3969;
+            padding: 10px 10px 10px 15px;
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .input-container .check-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            color: green;
+            display: none;
+        }
+
+    .radio-button {
+        display: none;
+    }
+
+        .radio-button + label {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #e7307d;
+            margin-left: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .radio-button:checked + label::after {
+            content: '\f00c';
+            font-family: 'FontAwesome';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+
+    .service-checkbox {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        -webkit-appearance: none;
+        appearance: none;
+        border: 2px solid #cc0177;
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        background-color: #fff;
+        position: relative;
+    }
+
+        .service-checkbox:checked {
+            background-color: #cc0177;
+            border-color: #cc0177;
+        }
+
+            .service-checkbox:checked::before {
+                content: '✓'; /* Carácter del check */
+                display: block;
+                color: white;
+                font-weight: bold;
+                text-align: center;
+                line-height: 16px; /* Ajustar para centrar el check */
+                font-size: 16px;
+            }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .checkbox-container h5 {
+            margin: 0 0 0 10px;
+        }
+</style>
+
+<form asp-action="Create" method="post">
+    <div class="input-container">
+        <input asp-for="Nombres" placeholder="Nombres" class="form-control" />
+        <i class="fa fa-check check-icon"></i>
+        <span asp-validation-for="Nombres" class="text-danger" style="display: block; margin-top: 5px;"></span>
+    </div>
+    <div class="input-container">
+        <input asp-for="Primer_Apellido" placeholder="Primer Apellido" class="form-control" />
+        <i class="fa fa-check check-icon"></i>
+        <span asp-validation-for="Primer_Apellido" class="text-danger" style="display: block; margin-top: 5px;"></span>
+    </div>
+    <div class="input-container">
+        <input asp-for="ClientSurname2" placeholder="Segundo Apellido" class="form-control" />
+        <i class="fa fa-check check-icon"></i>
+        <span asp-validation-for="ClientSurname2" class="text-danger" style="display: block; margin-top: 5px;"></span>
+    </div>
+    <div class="input-container">
+        <input asp-for="ClientPhone1" placeholder="Teléfono" class="form-control" />
+        <i class="fa fa-check check-icon"></i>
+        <span asp-validation-for="ClientPhone1" class="text-danger" style="display: block; margin-top: 5px;"></span>
+    </div>
+    <div class="input-container">
+        <input asp-for="ClientEmail" placeholder="Email" class="form-control" />
+        <i class="fa fa-check check-icon"></i>
+        <span asp-validation-for="ClientEmail" class="text-danger" style="display: block; margin-top: 5px;"></span>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" class="service-checkbox" />
+        <h5>Acepto los términos y condiciones</h5>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" class="service-checkbox" />
+        <h5>Quiero que me informes de vuestras ofertas</h5>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="background-color: #e7307d; color: white; padding: 10px 20px; border: none; border-radius: 5px; width: 100%;">Continuar</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.querySelectorAll('.input-container input').forEach(input => {
+            input.addEventListener('input', function () {
+                const checkIcon = this.nextElementSibling;
+                if (this.value.trim() !== '') {
+                    checkIcon.style.display = 'block';
+                } else {
+                    checkIcon.style.display = 'none';
+                }
+            });
+        });
+    </script>
+}

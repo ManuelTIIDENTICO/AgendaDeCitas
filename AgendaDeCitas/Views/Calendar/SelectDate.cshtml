@@ -1,0 +1,487 @@
+﻿@{
+    ViewData["Title"] = "Select Date";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="stylesheet" href="~/css/styles.css">
+    <style>
+        .calendar-page * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1 {
+            font-family: 'Nunito Sans', sans-serif;
+            color: #e7307d;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 25px;
+        }
+
+        h4 {
+            font-family: 'Nunito Sans', sans-serif;
+            color: #000;
+            font-size: 20px;
+        }
+
+        .calendar-page {
+            display: flex;
+            background-color: #f7f3f7;
+            min-height: 100vh;
+            padding: 0 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calendar-container {
+            background: #f7f3f7;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
+            background: #fef8fb;
+        }
+
+        .calendar-navigation {
+            display: flex;
+        }
+
+            .calendar-navigation span {
+                height: 38px;
+                width: 38px;
+                margin: 0 1px;
+                cursor: pointer;
+                text-align: center;
+                line-height: 38px;
+                border-radius: 50%;
+                user-select: none;
+                color: #aeabab;
+                font-size: 1.9rem;
+            }
+
+                .calendar-navigation span:hover {
+                    background: #f2f2f2;
+                }
+
+        .calendar-current-date {
+            font-weight: bold;
+            font-size: 1.45rem;
+            margin: 0 20px;
+
+        }
+
+        .calendar-body {
+            padding: 20px;
+            background-color: #fef8fb;
+        }
+
+            .calendar-body ul {
+                list-style: none;
+                flex-wrap: wrap;
+                display: flex;
+                text-align: center;
+            }
+
+            .calendar-body .calendar-dates {
+                margin-bottom: 20px;
+            }
+
+            .calendar-body li {
+                width: calc(100% / 7);
+                font-size: 1.07rem;
+                color: #414141;
+            }
+
+            .calendar-body .calendar-weekdays li {
+                cursor: default;
+                font-weight: 500;
+            }
+
+            .calendar-body .calendar-dates li {
+                margin-top: 30px;
+                position: relative;
+                z-index: 1;
+                cursor: pointer;
+            }
+
+        .calendar-dates li.inactive {
+            color: #aaa;
+        }
+
+        .calendar-dates li.active {
+            color: #000;
+        }
+
+        .calendar-dates li::before {
+            position: absolute;
+            content: "";
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .calendar-dates li.active::before {
+        }
+
+        .calendar-dates li:not(.active):hover::before {
+            background: #e4e1e1;
+        }
+
+        .selected-date {
+            background-color: #e7307d !important;
+            color: #fff;
+
+
+            
+        }
+
+        .btn-primary {
+            margin-top: 10px;
+            margin-right: 10px;
+            padding: 10px 20px;
+            color: #000;
+            border-radius: 5px;
+            border-color: #000;
+            background-color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #e7307d;
+            }
+
+            .btn-primary:focus {
+                outline: none;
+            }
+
+        #results {
+            margin-top: 20px;
+        }
+
+            #results h3 {
+                color: #cc0177;
+            }
+
+        .material-symbols-rounded {
+            font-family: 'Material Symbols Rounded', sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px; /* Puedes ajustar el tamaño según tus necesidades */
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+
+        .today::after {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background-color: #E7307D;
+            border-radius: 50%;
+            margin: 0 auto;
+            margin-top: 5px;
+        }
+
+        .card {
+            border-color: #fff;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            background-color: transparent;
+            color: #000;
+            
+           
+         
+        }
+
+            .card-header h2 {
+                margin-bottom: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .card-header .btn-link-custom {
+                width: 100%;
+            }
+
+        .accordion {
+            border: 1px solid #000;
+            border-radius: 10px;
+        }
+
+        #loading {
+            position: fixed;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+       
+
+
+       
+        </style>
+</head>
+<body>
+    <p><i class="fa fa-location-dot"></i> @ViewData["ClinicAddress"], @ViewData["ClinicCity"] </p>
+    <div id="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+    <h1>Selecciona día y hora </h1>
+    <input type="hidden" id="clinicID" name="clinicId" value="@ViewData["ClinicID"]" />
+    <input type="hidden" id="serviceIDs" name="serviceIDs" value="@ViewData["ServiceIDs"]" />
+   
+    <br />
+
+    <input type="hidden" id="selectedDate" name="selectedDate" required />
+
+    <header class="calendar-header">
+        <p class="calendar-current-date"></p>
+        <div class="calendar-navigation">
+            <span id="calendar-next" class="material-symbols-rounded">chevron_right</span>
+        </div>
+    </header>
+    <div class="calendar-body">
+        <ul class="calendar-weekdays">
+            <li>Dom</li>
+            <li>Lun</li>
+            <li>Mar</li>
+            <li>Mié</li>
+            <li>Jue</li>
+            <li>Vie</li>
+            <li>Sab</li>
+        </ul>
+        <ul class="calendar-dates"></ul>
+    </div>
+
+    <div class="accordion">
+
+        <div class="card-header" onclick="toggleAccordion(this)">
+            <h4>Lo antes posible</h4>
+            <i class="fa fa-chevron-right" style="color:#E7307D;margin-left: 100%;"></i>
+            <div id="results">
+            </div>
+        </div>
+
+    </div>
+
+    <div id="error-message" class="error-message" style="display: none;"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth();
+
+        const day = document.querySelector(".calendar-dates");
+        const currdate = document.querySelector(".calendar-current-date");
+        const prenexIcons = document.querySelectorAll(".calendar-navigation span");
+
+        const months = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+            "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+
+        const manipulate = () => {
+            let dayone = new Date(year, month, 1).getDay();
+            let lastdate = new Date(year, month + 1, 0).getDate();
+            let dayend = new Date(year, month, lastdate).getDay();
+            let monthlastdate = new Date(year, month, 0).getDate();
+            let lit = "";
+
+            for (let i = dayone; i > 0; i--) {
+                lit += `<li class="inactive">${monthlastdate - i + 1}</li>`;
+            }
+
+            for (let i = 1; i <= lastdate; i++) {
+                let isToday = i === date.getDate() && month === new Date().getMonth() && year === new Date().getFullYear() ? "active today" : "active";
+                lit += `<li class="${isToday}" onclick="dateClick('${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}')">${i}</li>`;
+            }
+
+            for (let i = dayend; i < 6; i++) {
+                lit += `<li class="inactive">${i - dayend + 1}</li>`;
+            }
+
+            currdate.innerText = `${months[month]} ${year}`;
+            day.innerHTML = lit;
+        }
+
+        manipulate();
+
+        prenexIcons.forEach(icon => {
+            icon.addEventListener("click", () => {
+                month = icon.id === "calendar-prev" ? month - 1 : month + 1;
+                if (month < 0 || month > 11) {
+                    date = new Date(year, month, new Date().getDate());
+                    year = date.getFullYear();
+                    month = date.getMonth();
+                } else {
+                    date = new Date();
+                }
+                manipulate();
+            });
+        });
+
+        function dateClick(selectedDate) {
+            const today = new Date().toISOString().split('T')[0];
+            if (selectedDate < today) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Fecha no válida',
+                    text: 'No puedes seleccionar una fecha anterior a hoy.',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            // Remover la clase 'selected-date' de todas las fechas
+            document.querySelectorAll('.calendar-dates li').forEach(li => {
+                li.classList.remove('selected-date');
+            });
+
+            // Agregar la clase 'selected-date' a la fecha seleccionada
+            document.querySelector(`li[onclick="dateClick('${selectedDate}')"]`).classList.add('selected-date');
+
+            document.getElementById('selectedDate').value = selectedDate;
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('error-message').style.display = 'none';
+            // Mostrar el indicador de carga
+            document.getElementById('loading').style.display = 'flex';
+
+            $.ajax({
+                url: '@Url.Action("SelectDate", "Calendar")',
+                method: 'POST',
+                data: { selectedDate: selectedDate, clinicId: $('#clinicID').val(), serviceIDs: $('#serviceIDs').val() },
+                success: function (response) {
+                    if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.error,
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        document.getElementById('loading').style.display = 'none';
+                        response.diaryOptions.forEach(function (option) {
+                            var button = document.createElement('button');
+                            button.className = 'btn-primary';
+                            button.textContent = option.timeStart;
+                            button.onclick = function () {
+                                selectTime(option.timeStart, option.timeEnd);
+                            };
+                            document.getElementById('results').appendChild(button);
+                        });
+                    }
+                }
+            });
+            toggleAccordion(this)
+        }
+        $('.btn-link-custom').on('click', function () {
+            var icon = $(this).find('i');
+            var isExpanded = $(this).attr('aria-expanded') === 'true';
+
+            $('.accordion').css('border', '1px solid #000');
+            if (isExpanded) {
+                icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                $(this).closest('.accordion').css('border', '1px solid #cc0177');
+            } else {
+                icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                $(this).closest('.accordion').css('border', '1px solid #cc0177');
+            }
+        });
+
+        $('.collapse').on('show.bs.collapse', function () {
+            $(this).closest('.accordion').css('border', '2px solid #cc0177');
+        }).on('hide.bs.collapse', function () {
+            $(this).closest('.accordion').css('border', '1px solid #000');
+        });
+        function checkForErrors(response) {
+            if (response.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.error,
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                console.log("No errors found");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const response = @Html.Raw(Json.Serialize(ViewData["ResponseJson"]));
+            checkForErrors(response);
+        });
+
+        function toggleAccordion(element) {
+            const results = document.getElementById("results");
+            const icon = element.querySelector("i");
+            const accordion = element.closest('.accordion');
+            if (results.style.display === "none") {
+                results.style.display = "block";
+                accordion.classList.add("expanded");
+                icon.classList.remove("fa-chevron-right");
+                icon.classList.add("fa-chevron-down");
+            } else {
+                results.style.display = "none";
+                accordion.classList.remove("expanded");
+                icon.classList.remove("fa-chevron-down");
+                icon.classList.add("fa-chevron-right");
+            }
+        }
+
+
+        function selectTime(timeStart, timeEnd) {
+            var urlParams = new URLSearchParams(window.location.search);
+            var clinicID = urlParams.get('clinicID');
+            var serviceID = urlParams.get('serviceIDs');
+            var selectedDate = document.getElementById('selectedDate').value;
+            var url = '../client/create?clinicID=' + clinicID + '&serviceID=' + serviceID + '&date=' + selectedDate + '&timeStart=' + timeStart + '&timeEnd=' + timeEnd;
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

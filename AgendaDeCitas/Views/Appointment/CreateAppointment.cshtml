@@ -1,0 +1,90 @@
+﻿@model AgendaDeCitas.Models.AppointmentViewModel
+
+@{
+    ViewData["Title"] = "Appointment Success";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #f7f3f7;
+            color: #6d3969;
+        }
+
+        h1 {
+            color: #cc0177;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f7f3f7;
+            border: 2px solid #cc0177;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+            .popup h2 {
+                color: #cc0177;
+                margin-bottom: 10px;
+            }
+
+            .popup p {
+                color: #6d3969;
+            }
+
+            .popup button {
+                background-color: #cc0177;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cita Confirmada</h1>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="popup" id="popup">
+        <h2>Resultado de la Cita</h2>
+        <p id="popupMessage">@Model.ResponseContent</p>
+        <button onclick="closePopup()">Cerrar</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var popupMessage = document.getElementById("popupMessage").innerText;
+            if (popupMessage) {
+                document.getElementById("popup").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            }
+        });
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+            window.location.href = "../Flowww/GetFlowwwData";
+        }
+    </script>
+</body>
+</html>
