@@ -22,25 +22,25 @@
             color: #E7307D;
             text-align: left;
             margin-bottom: 20px;
-            font-size: 36px;
+            font-size: 2.25rem;
         }
 
         h3 {
             font-family: 'Nunito Sans', sans-serif;
             color: #000;
-            font-size: 20px;
+            font-size: 1.25rem;
         }
 
         h4 {
             font-family: 'Nunito Sans', sans-serif;
             color: #000;
-            font-size: 18px;
+            font-size: 1.125rem;
         }
 
         h5 {
             font-family: 'Nunito Sans', sans-serif;
             color: #000;
-            font-size: 12px;
+            font-size: 0.75rem;
         }
 
         .city-section {
@@ -62,6 +62,16 @@
             display: flex;
             flex-direction: column;
         }
+
+        .clinic-link h5 {
+            margin: 0;
+        }
+
+        .clinic-link .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+
 
         .clinic-link span.clinic-name {
             font-size: 1.5em;
@@ -152,8 +162,8 @@
         }
 
         .service-checkbox {
-            width: 20px;
-            height: 20px;
+            width: 1.25em;
+            height: 1.25em;
             margin: 0;
             -webkit-appearance: none;
             appearance: none;
@@ -176,8 +186,8 @@
                     color: white;
                     font-weight: bold;
                     text-align: center;
-                    line-height: 16px;
-                    font-size: 16px;
+                    line-height: 1em;
+                    font-size: 1em;
                 }
 
         .search-bar {
@@ -206,6 +216,7 @@
             align-items: center;
         }
     </style>
+
 </head>
 <body>
     <h1>Elige tu centro</h1>
@@ -247,7 +258,9 @@
                                         <h5><span class="clinic-name">@formatted</span></h5>
                                         <span class="clinic-address">@clinic.ClinicAppAddress1</span>
                                     </div>
+                                    <div class="checkbox-container">
                                     <input type="checkbox" class="service-checkbox" data-clinic-id="@clinic.ClinicID" />
+                                    </div>
                                 </div>
                             }
                         </div>
@@ -302,6 +315,11 @@
                     $(this).hide();
                 }
                 document.getElementById('loading').style.display = 'none';
+            });
+            $('.service-checkbox').on('change', function () {
+                if ($(this).is(':checked')) {
+                    $('.service-checkbox').not(this).prop('checked', false);
+                }
             });
         });
 

@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+<br />
+
+<h2>Login</h2>
+
+<div>
+
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap">
+    <style>
+        .input-group {
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efecto de sombra */
+            transition: box-shadow 0.3s ease; /* Transición suave para el efecto de sombra */
+        }
+
+            .input-group .form-control:focus {
+                box-shadow: none; /* Elimina la sombra al enfocar */
+                outline: none; /* Elimina el borde de enfoque predeterminado del navegador */
+            }
+
+        .form-control {
+            border: none;
+            border-radius: 0 30px 30px 0;
+            font-size: 16px;
+            font-family: 'Nunito Sans', sans-serif;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-group-text {
+            background-color: #fff;
+            border-color: #ccc;
+            border-right: none;
+            border-top: none;
+            border-bottom: none;
+            color: #d3d3d3;
+        }
+
+        .icon-active {
+            color: #E7307D;
+        }
+
+        .btn-custom-color {
+            background-color: #d4cccd;
+            color: white;
+            border-radius: 30px;
+            border: none;
+            padding: 10px;
+            font-size: 20px;
+            font-family: 'Nunito Sans', sans-serif;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+            .btn-custom-color:hover {
+                background-color: #E7307D;
+            }
+
+        .w-100 {
+            width: 100%;
+        }
+        h2 {
+            font-family: 'Nunito Sans', sans-serif;
+            color: #E7307D;
+            font-size: 24px;
+            font-weight: bold; /* Aplica negrita al texto */
+            text-align: center;
+        }
+
+        .text-test {
+            font-family: 'Nunito Sans', sans-serif;
+            text-align: center; /* Para centrar el texto si es necesario */
+            font-size: 12px;
+            color:#000;
+        }
+        /* Estilos personalizados */
+        .text-link {
+            font-family: 'Nunito Sans', sans-serif;
+            text-align: center; /* Para centrar el texto si es necesario */
+            font-size: 18px;
+        }
+
+            .text-link a {
+                color: #E7307D; /* Cambia el color del texto del enlace */
+                text-decoration: none; /* Elimina el subrayado si es necesario */
+            }
+
+                .text-link a:hover {
+                    text-decoration: underline; /* Opcional: agrega un subrayado al pasar el mouse sobre el enlace */
+                }
+
+       
+
+        .text-center {
+            font-family: 'Nunito Sans', sans-serif;
+            text-align: center; /* Para centrar el texto si es necesario */
+            font-size: 16px;
+            font-weight: bold; /* Aplica negrita al texto */
+        }
+
+
+
+
+        
+    </style>
+</head>
+<body>
+    
+
+    <form id="loginForm" method="post" action="/Account/Login" style="max-width: 400px; margin: auto;">
+        <div class="mb-3">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-envelope" id="emailIcon"></i></span>
+                <input type="text" id="username" name="username" class="form-control rounded" placeholder="Email*" required />
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-lock" id="lockIcon"></i></span>
+                <input type="password" id="password" name="password" class="form-control rounded" placeholder="Contraseña" required />
+            </div>
+        </div>
+      
+        @if (ViewBag.Message != null)
+        {
+            <div class="text-test">@ViewBag.Message</div>
+            <br />
+            <div class="text-center">¿No recuerdas tu contraseña?</div>
+            <div class="text-link">
+                <a href="/recovery/recoverpassword"> Recupérala aquí </a>
+            </div>
+        }
+        
+        <br />
+        <div class="mb-3">
+            <button type="submit" class="btn btn-custom-color w-100">
+                LOGIN <i class="fas fa-arrow-right fa-arrow-right-light"></i>
+            </button>
+        </div>
+        <br />
+
+        
+        <div class="text-center">
+            ¿No tienes cuenta creada?
+        </div>
+        <div class="text-link">
+            <a href="/user/Register"> Regístrate </a>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var usernameInput = document.getElementById("username");
+            var passwordInput = document.getElementById("password");
+            var emailIcon = document.getElementById("emailIcon");
+            var lockIcon = document.getElementById("lockIcon");
+
+            function updateIconColor(input, icon) {
+                if (input.value.trim() !== "") {
+                    icon.classList.add("icon-active");
+                } else {
+                    icon.classList.remove("icon-active");
+                }
+            }
+
+            usernameInput.addEventListener("input", function () {
+                updateIconColor(usernameInput, emailIcon);
+            });
+
+            passwordInput.addEventListener("input", function () {
+                updateIconColor(passwordInput, lockIcon);
+            });
+        });
+    </script>
+</body>
+</html>

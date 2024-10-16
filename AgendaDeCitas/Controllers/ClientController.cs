@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AgendaDeCitas.Models;
 using Newtonsoft.Json.Linq;
+using Microsoft.Data.SqlClient;
 using System.Xml.Linq;
+using System.Configuration;
 
 namespace AgendaDeCitas.Controllers
 {
@@ -15,12 +17,62 @@ namespace AgendaDeCitas.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly string _connectionString;
 
-        public ClientController(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        public ClientController(HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
+      
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserDetails(string nombres, string telefono)
+        {
+            var email = HttpContext.Session.GetString("Email");
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest("No email found in session.");
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    await conn.OpenAsync();
+                    string query = "UPDATE [Sinvello].[dbo].[Users] " +
+                                   "SET [usr_nombres] = @Nombres, [usr_telefono] = @Telefono " +
+                                   "WHERE [usr_email] = @Email";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Nombres", nombres);
+                        cmd.Parameters.AddWithValue("@Telefono", telefono);
+                        cmd.Parameters.AddWithValue("@Email", email);
+
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+
+                        if (rowsAffected > 0)
+                        {
+                            return Ok("User details updated successfully.");
+                        }
+                        else
+                        {
+                            return NotFound("User not found.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
 
         [HttpGet]
         public IActionResult Create()
@@ -31,7 +83,12 @@ namespace AgendaDeCitas.Controllers
             SetSessionValue("date", query["date"].ToString());
             SetSessionValue("timeStart", query["timeStart"].ToString());
             SetSessionValue("timeEnd", query["timeEnd"].ToString());
-
+            var clinicAddress = _httpContextAccessor.HttpContext.Session.GetString("ClinicAddress");
+            ViewBag.ClinicAddress = clinicAddress;
+            ViewBag.Nombres = HttpContext.Session.GetString("Nombres");
+            ViewBag.Apellidos = HttpContext.Session.GetString("Apellidos");
+            ViewBag.Email = HttpContext.Session.GetString("Email");
+            ViewBag.Telefono = HttpContext.Session.GetString("Telefono");
             return View();
         }
 
@@ -42,6 +99,13 @@ namespace AgendaDeCitas.Controllers
             {
                 try
                 {
+
+                    string nombre = model.Nombres; // Asumiendo que 'Nombres' contiene el nombre completo
+                    string telefono = model.ClientPhone1; // Asumiendo que 'ClientPhone1' contiene el teléfono
+
+                    // Llamar a la función para actualizar los detalles del usuario
+                    await UpdateUserDetails(nombre, telefono);
+
                     // Paso 1: Obtener el token del cliente
                     var clientTokenFromApi = await GetClientTokenAsync(model);
 

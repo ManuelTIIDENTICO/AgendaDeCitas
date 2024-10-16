@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<div>
+    @if (ViewBag.Message != null)
+    {
+        <div style="color:red;">@ViewBag.Message</div>
+    }
+</div>
+
+<form id="loginForm" method="post" action="/Account/Login">
+    <div>
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" name="username" class="form-control" required />
+    </div>
+    <div>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" class="form-control" required />
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+    <div>
+        <a href="/Account/Register">¿No tienes cuenta creada? Regístrate</a>
+    </div>
+</form>
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        // Puedes agregar validaciones de JavaScript aquí
+        if (username === "" || password === "") {
+            event.preventDefault();
+            alert("Por favor, rellena todos los campos.");
+        }
+    });
+</script>

@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Confirmación de Registro";
+}
+<!-- Agregar en el head de _Layout.cshtml o directamente en esta vista -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+<style>
+    .input-group {
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efecto de sombra */
+        transition: box-shadow 0.3s ease; /* Transición suave para el efecto de sombra */
+    }
+
+        .input-group .form-control:focus {
+            box-shadow: none; /* Elimina la sombra al enfocar */
+            outline: none; /* Elimina el borde de enfoque predeterminado del navegador */
+        }
+
+    .form-control {
+        border: none;
+        border-radius: 0 30px 30px 0;
+        font-size: 16px;
+        font-family: 'Nunito Sans', sans-serif;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .input-group-text {
+        background-color: #fff;
+        border-color: #ccc;
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+        color: #d3d3d3;
+    }
+
+    .icon-active {
+        color: #E7307D;
+    }
+
+    .btn-custom-color {
+        background-color: #E7307D;
+        color: white;
+        border-radius: 30px;
+        border: none;
+        padding: 10px;
+        font-size: 20px;
+        font-family: 'Nunito Sans', sans-serif;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+        .btn-custom-color:hover {
+            background-color: #E7307D;
+        }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    h2 {
+        font-family: 'Nunito Sans', sans-serif;
+        color: #000;
+        font-size: 30px;
+        font-weight: bold; /* Aplica negrita al texto */
+        text-align: center;
+    }
+
+    .text-test {
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 20px;
+        font-weight: lighter; /* Fuente ligera */
+        color: #000;
+    }
+
+    .text-test1 {
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 18px;
+        font-weight: lighter; /* Fuente ligera */
+        color: #000;
+    }
+
+    .text-link {
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 18px;
+    }
+
+        .text-link a {
+            color: #E7307D;
+            text-decoration: none;
+        }
+
+            .text-link a:hover {
+                text-decoration: underline;
+            }
+
+    .text-center {
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .custom-alert {
+        background-color: #E7307D;
+        color: white;
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+
+    /* Estilos para la imagen */
+    .party-icon {
+        width: 50px; /* Tamaño de la imagen */
+        height: auto; /* Mantiene la proporción de la imagen */
+        margin-bottom: 20px; /* Espacio debajo de la imagen */
+    }
+</style>
+
+<div class="container text-center mt-5">
+    <!-- Imagen de gorro de fiesta -->
+    
+    <img src="https://identico.com.co/wp-content/uploads/2021/06/Gorro.jpg"  alt="Logo" />
+
+    <h2>¡Registro Completado!</h2>
+    <div class="text-test1">
+       @*  <p>Ya eres parte de Sinvello!</p>
+        <p>Ahora puedes reservar y gestionar tus citas con un solo click.</p> *@
+        "¡Ya eres parte de Sinvello!
+
+        Por favor, revisa tu bandeja de entrada y verifica tu cuenta. Ahora podrás reservar y gestionar tus citas con un solo clic."
+    </div>
+    <!-- Botón de empezar -->
+    <a href="@Url.Action("Index", "Account")" class="btn btn-custom-color w-100">EMPEZAR<i class="fas fa-arrow-right fa-arrow-right-light"></i></a>
+</div>

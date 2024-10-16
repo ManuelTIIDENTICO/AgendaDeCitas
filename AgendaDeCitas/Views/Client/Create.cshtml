@@ -4,11 +4,17 @@
     ViewData["Title"] = "Crear Cliente";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-<h4>Resumen de tu cita</h4>
-<div class="card"></div>
-
+<br />
+<h5>Resumen de tu cita</h5>
+<br />
+<div class="card">
+    <div id="appointmentSummary">
+        
+    </div>
+</div>
+<br />
 <h1>Reserva tu cita</h1>
 
 <style>
@@ -28,21 +34,33 @@
         font-size: 25px;
     }
 
-    h4 {
-        font-family: 'Nunito Sans', sans-serif;
-        color: #000;
-        font-size: 25px;
-    }
 
-    h5 {
+
+    h3 {
         font-family: 'Nunito Sans', sans-serif;
         color: #000;
         font-size: 15px;
     }
 
+    h5 {
+        font-family: 'Nunito Sans', sans-serif;
+        color: #000;
+        font-size: 18px;
+        font-weight: bold;
+        
+    }
+
+    h4 {
+        font-family: 'Nunito Sans', sans-serif;
+        color: #000;
+        font-size: 18px;
+        
+    }
+
     .card {
-        border-color: #fff;
-        border-radius: 10px;
+        border-color: #E7307D;
+        border-radius: 20px;
+        padding: 20px;
     }
 
     .card-header {
@@ -154,41 +172,55 @@
         .checkbox-container h5 {
             margin: 0 0 0 10px;
         }
+
+    .icon {
+        margin-right: 10px;
+        font-size: 1.5em; /* Tamaño del ícono */
+        color: #E7307D; /* Color del ícono */
+    }
+
+    .icon-light {
+        color: #333; /* Color más suave para íconos ligeros */
+    }
+
+    .icon-small {
+        font-size: 1.2em; /* Tamaño más pequeño para íconos */
+    }
 </style>
 
 <form asp-action="Create" method="post">
     <div class="input-container">
-        <input asp-for="Nombres" placeholder="Nombres" class="form-control" />
+        <input asp-for="Nombres" placeholder="Nombres" value="@ViewBag.Nombres" class="form-control" style="border-radius:30px;padding-top: 15px;padding-bottom: 15px;" />
         <i class="fa fa-check check-icon"></i>
         <span asp-validation-for="Nombres" class="text-danger" style="display: block; margin-top: 5px;"></span>
     </div>
     <div class="input-container">
-        <input asp-for="Primer_Apellido" placeholder="Primer Apellido" class="form-control" />
+        <input asp-for="Primer_Apellido" placeholder="Primer Apellido" value="@ViewBag.Apellidos" class="form-control" style="border-radius:30px;padding-top: 15px;padding-bottom: 15px;" />
         <i class="fa fa-check check-icon"></i>
-        <span asp-validation-for="Primer_Apellido" class="text-danger" style="display: block; margin-top: 5px;"></span>
+        <span asp-validation-for="Primer_Apellido" class="text-danger"  style="display: block; margin-top: 5px;"></span>
     </div>
     <div class="input-container">
-        <input asp-for="ClientSurname2" placeholder="Segundo Apellido" class="form-control" />
+        <input asp-for="ClientSurname2" placeholder="Segundo Apellido" style="border-radius:30px;padding-top: 15px;padding-bottom: 15px;" class="form-control" />
         <i class="fa fa-check check-icon"></i>
         <span asp-validation-for="ClientSurname2" class="text-danger" style="display: block; margin-top: 5px;"></span>
     </div>
     <div class="input-container">
-        <input asp-for="ClientPhone1" placeholder="Teléfono" class="form-control" />
+        <input asp-for="ClientPhone1" placeholder="Teléfono" value="@ViewBag.Telefono" style="border-radius:30px;padding-top: 15px;padding-bottom: 15px;" class="form-control" />
         <i class="fa fa-check check-icon"></i>
         <span asp-validation-for="ClientPhone1" class="text-danger" style="display: block; margin-top: 5px;"></span>
     </div>
     <div class="input-container">
-        <input asp-for="ClientEmail" placeholder="Email" class="form-control" />
+        <input asp-for="ClientEmail" placeholder="Email" value="@ViewBag.Email" style="border-radius:30px;padding-top: 15px;padding-bottom: 15px;" class="form-control" />
         <i class="fa fa-check check-icon"></i>
         <span asp-validation-for="ClientEmail" class="text-danger" style="display: block; margin-top: 5px;"></span>
     </div>
     <div class="checkbox-container">
         <input type="checkbox" class="service-checkbox" />
-        <h5>Acepto los términos y condiciones</h5>
+        <h4>&nbsp;  Acepto los <a href="https://sinvelloporlaser.es/politica-de-privacidad/" style="color:#e7307d" target="_blank">términos y condiciones</a> </h4>
     </div>
     <div class="checkbox-container">
         <input type="checkbox" class="service-checkbox" />
-        <h5>Quiero que me informes de vuestras ofertas</h5>
+        <h4>&nbsp;  Quiero que me informes de vuestras ofertas</h4>
     </div>
 
     <button type="submit" class="btn btn-primary" style="background-color: #e7307d; color: white; padding: 10px 20px; border: none; border-radius: 5px; width: 100%;">Continuar</button>
@@ -198,15 +230,76 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        document.querySelectorAll('.input-container input').forEach(input => {
-            input.addEventListener('input', function () {
-                const checkIcon = this.nextElementSibling;
-                if (this.value.trim() !== '') {
-                    checkIcon.style.display = 'block';
-                } else {
-                    checkIcon.style.display = 'none';
-                }
-            });
-        });
+        // Function to extract query parameters from URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Function to get the name of the day
+        // Función para obtener el nombre del día correctamente
+        function getDayName(dateStr) {
+            const [year, month, day] = dateStr.split('-'); // Extrae año, mes, día
+            const date = new Date(year, month - 1, day); // Crea el objeto Date usando los componentes de fecha (mes en base 0)
+            const options = { weekday: 'long' };
+            return date.toLocaleDateString('es-ES', options); // Formatea usando el locale 'es-ES' para obtener el nombre del día en español
+        }
+
+        // Resto del código...
+
+
+        // Function to calculate the difference in minutes between two times
+        function getTimeDifferenceInMinutes(startTimeStr, endTimeStr) {
+            const startTime = new Date(`1970-01-01T${startTimeStr}:00`);
+            const endTime = new Date(`1970-01-01T${endTimeStr}:00`);
+            const diffMs = endTime - startTime;
+            return Math.floor(diffMs / (1000 * 60));
+        }
+        function formatDateToSpanish(dateString) {
+            // Use the format YYYY-MM-DDTHH:mm:ss to avoid timezone issues
+            const date = new Date(dateString + 'T00:00:00');
+
+            const day = date.getDate();
+            const month = date.toLocaleString('es-ES', { month: 'long' }); // Get the month name in Spanish
+            const year = date.getFullYear();
+
+            // Capitalize the first letter of the month name
+            const formattedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+
+            return `${day} de ${formattedMonth} de ${year}`;
+        }
+
+        // Example usage:
+        console.log(formatDateToSpanish('2024-08-21'));
+
+
+        // Display appointment summary
+        function capitalizeFirstLetter(string) {
+            if (!string) return string;
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        function displayAppointmentSummary() {
+            const date = getQueryParam('date');
+            const timeStart = getQueryParam('timeStart');
+            const timeEnd = getQueryParam('timeEnd');
+            const clinicAddress = '@ViewBag.ClinicAddress';
+
+            const summaryDiv = document.getElementById('appointmentSummary');
+            if (date && timeStart && timeEnd) {
+                const dayName = capitalizeFirstLetter(getDayName(date));
+                const durationMinutes = getTimeDifferenceInMinutes(timeStart, timeEnd);
+                const dateformat = formatDateToSpanish(date);
+                summaryDiv.innerHTML = `
+            <h3><i class="fa fa-calendar-days icon icon-light"></i> ${dayName}, ${dateformat}</h3>
+            <h3><i class="fa fa-map-marker-alt icon icon-light"></i>${clinicAddress}</h3>
+            <h3><i class="fa fa-clock icon icon-light"></i> ${durationMinutes} minutos</h3>
+                        `;
+            } else {
+                summaryDiv.innerHTML = '<p>No se encontraron detalles de la cita.</p>';
+            }
+        }
+
+        // Run the function on page load
+        displayAppointmentSummary();
     </script>
 }

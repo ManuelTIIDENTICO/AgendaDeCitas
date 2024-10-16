@@ -46,7 +46,7 @@ namespace AgendaDeCitas
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Ciudades}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Index}/{id?}");
 
             app.Run();
         }

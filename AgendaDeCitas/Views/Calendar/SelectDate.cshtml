@@ -287,13 +287,13 @@
     </header>
     <div class="calendar-body">
         <ul class="calendar-weekdays">
-            <li>Dom</li>
             <li>Lun</li>
             <li>Mar</li>
             <li>Mié</li>
             <li>Jue</li>
             <li>Vie</li>
             <li>Sab</li>
+            <li>Dom</li>
         </ul>
         <ul class="calendar-dates"></ul>
     </div>
@@ -301,7 +301,6 @@
     <div class="accordion">
 
         <div class="card-header" onclick="toggleAccordion(this)">
-            <h4>Lo antes posible</h4>
             <i class="fa fa-chevron-right" style="color:#E7307D;margin-left: 100%;"></i>
             <div id="results">
             </div>
@@ -327,21 +326,29 @@
         ];
 
         const manipulate = () => {
-            let dayone = new Date(year, month, 1).getDay();
+            // Ajustar el cálculo para que el primer día del mes sea lunes
+            let dayone = new Date(year, month, 1).getDay() - 1;
+            if (dayone === -1) dayone = 6; // Si es -1, significa que era domingo, así que ajusta a 6
+
             let lastdate = new Date(year, month + 1, 0).getDate();
-            let dayend = new Date(year, month, lastdate).getDay();
+            let dayend = new Date(year, month, lastdate).getDay() - 1;
+            if (dayend === -1) dayend = 6; // Ajusta de la misma manera para el último día del mes
+
             let monthlastdate = new Date(year, month, 0).getDate();
             let lit = "";
 
+            // Ajustar los días inactivos antes del comienzo del mes
             for (let i = dayone; i > 0; i--) {
                 lit += `<li class="inactive">${monthlastdate - i + 1}</li>`;
             }
 
+            // Agregar los días del mes
             for (let i = 1; i <= lastdate; i++) {
                 let isToday = i === date.getDate() && month === new Date().getMonth() && year === new Date().getFullYear() ? "active today" : "active";
                 lit += `<li class="${isToday}" onclick="dateClick('${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}')">${i}</li>`;
             }
 
+            // Ajustar los días inactivos después del final del mes
             for (let i = dayend; i < 6; i++) {
                 lit += `<li class="inactive">${i - dayend + 1}</li>`;
             }
@@ -349,6 +356,7 @@
             currdate.innerText = `${months[month]} ${year}`;
             day.innerHTML = lit;
         }
+
 
         manipulate();
 

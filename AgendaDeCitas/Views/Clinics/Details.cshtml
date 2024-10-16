@@ -3,7 +3,6 @@
     string clinicID = ViewBag.ClinicID as string;
     var services = Model as Dictionary<string, string>; // Dictionary with ServiceDescription as key and ServiceID as value
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"> <!-- Include AOS CSS -->
 
     <title>Services</title>
     <style>
@@ -42,11 +42,12 @@
             color: #000000;
             text-decoration: none;
             text-align: left;
+            opacity: 0; /* Initial opacity for AOS */
+            transition: opacity 0.5s ease-in-out; /* Smooth transition */
         }
 
             .service-option:hover {
                 border-color: #E7307D;
-                
             }
 
         .service-label {
@@ -73,48 +74,31 @@
             }
 
                 .service-checkbox:checked::before {
-                    content: '✓'; /* Carácter del check */
+                    content: '✓'; /* Checkmark character */
                     display: block;
                     color: white;
                     font-weight: bold;
                     text-align: center;
-                    line-height: 16px; /* Ajustar para centrar el check */
+                    line-height: 16px; /* Center the checkmark */
                     font-size: 16px;
                 }
-
-        .btn-link-custom {
-            background-color: #ffffff;
-            color: #000;
-            width: 100%;
-            margin-top: 10px;
-            text-align: left;
-            text-decoration: none;
-            border-radius: 10px;
-            border: 1px solid #000; /* Borde sólido de color negro */
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: x-large;
-        }
-
-            .btn-link-custom:hover {
-                border-color: #E7307D; /* Cambio de color del borde al pasar el ratón */
-            }
 
         .btn-next {
             background-color: #E7307D;
             border-style: solid;
             color: white;
-            width: 100%;
-            margin-top: 2px;
-            text-align: center;
-            text-decoration: none;
+            width: calc(100% - 20px);
+            margin: 10px;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: x-large;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            display: none; /* Initially hidden */
         }
     </style>
 </head>
@@ -129,18 +113,34 @@
         {
             foreach (var service in services)
             {
-                <div class="service-option">
+                <div class="service-option" data-aos="fade-up" data-aos-duration="1000">
                     <h4><label for="service@services.Keys.ToList().IndexOf(service.Key)" class="service-label">@service.Key</label></h4>
                     <input type="checkbox" class="service-checkbox" id="service@services.Keys.ToList().IndexOf(service.Key)" value="@service.Value" />
                 </div>
             }
         }
 
-        <button class="btn-next" type="button" onclick="submitForm()">Continuar  <i class="fa fa-arrow-right" style="margin-left: auto;"></i> </button>
+        <button class="btn-next" id="continueButton" type="button" onclick="submitForm()">Continuar <i class="fa fa-arrow-right" style="margin-left: auto;"></i></button>
     </form>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script> <!-- Include AOS JavaScript -->
     <script>
-       
+        AOS.init(); // Initialize AOS
+
+        function toggleContinueButton() {
+            const checkboxes = document.querySelectorAll('.service-checkbox');
+            const continueButton = document.getElementById('continueButton');
+            let anyChecked = false;
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    anyChecked = true;
+                }
+            });
+
+            continueButton.style.display = anyChecked ? 'flex' : 'none';
+        }
+
         function submitForm() {
             const selectedServices = [];
             const checkboxes = document.querySelectorAll('.service-checkbox:checked');
@@ -154,6 +154,14 @@
             const url = `/calendar/selectdate?clinicID=${encodeURIComponent(clinicID)}&serviceIDs=${encodeURIComponent(serviceIDs)}`;
             window.location.href = url;
         }
+
+        // Attach event listeners to checkboxes
+        document.querySelectorAll('.service-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', toggleContinueButton);
+        });
+
+        // Initial check on page load
+        toggleContinueButton();
     </script>
 </body>
 </html>

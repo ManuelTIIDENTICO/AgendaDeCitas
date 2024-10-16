@@ -1,0 +1,217 @@
+﻿@model AgendaDeCitas.Models.User
+
+@{
+    ViewData["Title"] = "Registrar Usuario";
+}
+
+<h2>Regístrate</h2>
+
+<style>
+    .input-group {
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+        .input-group .form-control:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+    .form-control {
+        border: none;
+        border-radius: 0 30px 30px 0;
+        font-size: 16px;
+        font-family: 'Nunito Sans', sans-serif;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .input-group-text {
+        background-color: #fff;
+        border-color: #ccc;
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+        color: #d3d3d3;
+    }
+
+    .icon-active {
+        color: #E7307D;
+    }
+
+    .btn-custom-color {
+        background-color: #d4cccd;
+        color: white;
+        border-radius: 30px;
+        border: none;
+        padding: 10px;
+        font-size: 20px;
+        font-family: 'Nunito Sans', sans-serif;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+        .btn-custom-color:hover {
+            background-color: #E7307D;
+        }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    .service-checkbox {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        -webkit-appearance: none;
+        appearance: none;
+        border: 2px solid #cc0177;
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        background-color: #fff;
+        position: relative;
+        transition: background-color 0.2s;
+    }
+
+        .service-checkbox:checked {
+            background-color: #E7307D;
+            border: 2px solid #E7307D;
+        }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .checkbox-container h5 {
+            margin: 0 0 0 10px;
+        }
+
+    .icon {
+        margin-right: 10px;
+        font-size: 1.5em;
+        color: #E7307D;
+    }
+
+    .icon-light {
+        color: #333;
+    }
+
+    .custom-alert {
+        background-color: #E7307D;
+        color: white;
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+
+    h2 {
+        font-family: 'Nunito Sans', sans-serif;
+        color: #E7307D;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .text-test {
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 16px;
+        color: #000;
+    }
+
+    .text-link {
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 18px;
+    }
+
+        .text-link a {
+            color: #E7307D;
+            text-decoration: none;
+        }
+
+            .text-link a:hover {
+                text-decoration: underline;
+            }
+
+    .text-center {
+        font-family: 'Nunito Sans', sans-serif;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="custom-alert">@ViewBag.Message</div>
+}
+
+<form asp-action="Register" method="post" onsubmit="return validateForm()">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-user" id="nombresIcon"></i></span>
+            <input type="text" class="form-control" id="nombres" name="Nombres" placeholder="Nombres*" required />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-user" id="apellidosIcon"></i></span>
+            <input type="text" class="form-control" id="apellidos" name="Apellidos" placeholder="Apellidos*" required />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-envelope" id="emailIcon"></i></span>
+            <input type="email" class="form-control" id="email" placeholder="Email*" name="Email" required />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa fa-lock" id="lockIcon"></i></span>
+            <input type="password" class="form-control" id="password" placeholder="Contraseña" name="Password" required />
+        </div>
+    </div>
+
+    <br />
+    <div class="checkbox-container">
+        <input type="checkbox" class="service-checkbox" />
+        <div class="text-test">&nbsp;Acepto los &nbsp;</div>
+        <a href="https://sinvelloporlaser.es/politica-de-privacidad/" style="color:#e7307d" target="_blank">términos y condiciones</a>
+    </div>
+
+    <div class="checkbox-container">
+        <input type="checkbox" class="service-checkbox" />
+        <div class="text-test">&nbsp;Quiero que me informes de vuestras ofertas</div>
+    </div>
+
+    <button type="submit" class="btn btn-custom-color w-100">
+        REGISTRARME<i class="fas fa-arrow-right fa-arrow-right-light"></i>
+    </button>
+</form>
+
+<script>
+    function validateForm() {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        if (email === "" || password === "") {
+            alert("Por favor, completa todos los campos requeridos.");
+            return false;
+        }
+        return true;
+    }
+</script>

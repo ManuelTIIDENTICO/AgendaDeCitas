@@ -60,6 +60,7 @@ namespace AgendaDeCitas.Controllers
             var clinicAddress = clinicObject["Clinic"]?["ClinicAddress1"]?.ToString();
             var cliniccity = clinicObject["Clinic"]?["ClinicCity"]?.ToString();
 
+            HttpContext.Session.SetString("ClinicAddress", clinicAddress);
 
             ViewData["ClinicName"] = clinicName;
             ViewData["ClinicAddress"] = clinicAddress;

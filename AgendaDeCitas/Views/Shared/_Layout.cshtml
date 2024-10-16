@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,13 +13,19 @@
     <style>
         body {
             font-family: 'Nunito', sans-serif;
+            background-color: #fff;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
         }
 
         .back-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
             background-color: #fff;
             border: 1px solid #000;
             border-radius: 15px;
@@ -32,15 +40,34 @@
             .back-button i {
                 font-size: 18px; /* Ajusta el tamaño del ícono según sea necesario */
             }
+
+        .user-info {
+            font-size: 14px;
+            color: #000;
+        }
     </style>
 </head>
 <body>
+    <!-- Etiqueta <body> correctamente abierta -->
     <img src="https://eu062.flowww.net/sinvello/custom/logo.png" style="margin-left:4%" alt="Logo" />
 
-    <!-- Botón de Atrás -->
-    <button class="back-button" onclick="window.history.back();">
-        <i class="fas fa-arrow-left"></i> Atrás
-    </button>
+    <div class="header-bar">
+        <!-- Condicional para mostrar/ocultar el botón de Atrás -->
+        @if (!string.Equals(ViewContext.RouteData.Values["action"]?.ToString(), "Index", StringComparison.OrdinalIgnoreCase))
+        {
+            <button class="back-button" onclick="window.history.back();">
+                <i class="fas fa-arrow-left"></i> Atrás
+            </button>
+        }
+
+        <!-- Mostrar la sesión de Nombres -->
+        @if (HttpContextAccessor.HttpContext.Session.GetString("Nombres") != null)
+        {
+            <div class="user-info">
+                Bienvenido, @HttpContextAccessor.HttpContext.Session.GetString("Nombres")!
+            </div>
+        }
+    </div>
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -56,11 +83,11 @@
     @RenderSection("Scripts", required: false)
     <footer>
         <div class="token-display" hidden>
-            @if (Context.Session.GetString("ClientToken") != null)
+            @if (HttpContextAccessor.HttpContext.Session.GetString("ClientToken") != null)
             {
-                <p>@Context.Session.GetString("ClientToken")</p>
+                <p>@HttpContextAccessor.HttpContext.Session.GetString("ClientToken")</p>
             }
         </div>
     </footer>
-</body>
+</body> <!-- Etiqueta <body> correctamente cerrada -->
 </html>
